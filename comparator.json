@@ -1,0 +1,18 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "MurtySimonConjecture.murty_simon",
+    "MurtySimonConjecture.murty_simon_equality",
+    "MurtySimonConjecture.murty_simon_sharp",
+    "MurtySimonConjecture.lemma_1_2",
+    "MurtySimonConjecture.lemma_1_3"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

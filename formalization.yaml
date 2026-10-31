@@ -1,0 +1,127 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "The Murty–Simon conjecture on diameter-2-critical graphs"
+  description: >-
+    A Lean 4 / Mathlib formalization of the proof by Sanjana Das and Jacob Fox of the Murty–Simon
+    conjecture (arXiv:2610.39032, 2026). A graph is diameter-2-critical if its diameter is 2 and
+    deleting any edge increases the diameter. Theorem 1.1: every diameter-2-critical graph on n
+    vertices has at most ⌊n²/4⌋ edges (murty_simon), and a diameter-2-critical graph with ⌊n²/4⌋
+    edges is isomorphic to K_{⌈n/2⌉,⌊n/2⌋} (murty_simon_equality). Also: for n ≥ 3,
+    K_{⌈n/2⌉,⌊n/2⌋} is diameter-2-critical with ⌊n²/4⌋ edges, so the bound is attained
+    (murty_simon_sharp); Lemma 1.2, |E(G) \ M| ≤ |non-edges of G| for every maximal matching M of a
+    diameter-2-critical graph G (lemma_1_2); and Lemma 1.3, a diameter-2-critical graph with
+    equality in Lemma 1.2 for every maximal matching is triangle-free (lemma_1_3). Five statements;
+    the bound holds for every n, with no lower bound on n.
+  authors:
+    - "Juan Pablo Traverso Gianini"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Juan Pablo Traverso Gianini"
+
+classification:
+  arxiv: ["math.CO"]
+  msc2020: ["05C35", "05C12"]
+
+sources:
+  - title: "A proof of the Murty–Simon conjecture on diameter-2-critical graphs"
+    authors:
+      - "Sanjana Das"
+      - "Jacob Fox"
+    id: "arXiv:2610.39032"
+    type: "preprint"
+    location: >-
+      arXiv:2610.39032v1 (28 October 2026): Theorem 1.1, Lemmas 1.2 and 1.3, and their proofs in
+      Sections 2 (Lemmas 2.2, 2.4, 2.5, 2.7, 2.9–2.11, 2.13, Corollaries 2.12 and 2.14) and 3
+      (Lemmas 3.1–3.3).
+    relationship: "formalizes"
+    note: >-
+      Preprint. The formalization is by a different author; the article's authors were not
+      involved. The proof follows the article step by step.
+    license: "unknown"
+    author_endorsement: "none"
+  - title: "The maximum number of edges in a minimal graph of diameter 2"
+    authors:
+      - "Zoltán Füredi"
+    id: "doi:10.1002/jgt.3190160110"
+    type: "paper"
+    location: "Journal of Graph Theory 16 (1992) 81–98"
+    relationship: "background"
+    note: "The earlier proof of the conjecture for n larger than a tower of 2's, by regularity methods."
+    license: "all rights reserved"
+    author_endorsement: "n/a"
+
+related_formalizations:
+  - id: "PALOMAR-2026-10-16-000024 (jtraverso/turan-stability)"
+    relationship: "other"
+    note: >-
+      Background only, not a dependency: the stability theorem and the clique removal lemma used in
+      Füredi's 1992 proof for large n. The present proof uses neither; Mantel's theorem with its
+      equality case is taken from Mathlib's Turán theorem.
+
+status:
+  scope: >-
+    The five statements are proved for every finite simple graph (every n; the definition forces
+    n ≥ 3, and murty_simon_sharp assumes it). Known gaps relative to the article: none of its
+    stated results is omitted; the historical discussion and the survey of partial results in the
+    introduction are not formalized.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["Claude Opus 5.5"]
+      framework: "Claude Code (Anthropic)"
+      tool_setup: >-
+        Wrote the whole Lean development (MurtySimon/), the Challenge/Solution pair and the
+        packaging, from the article, under the author's direction. Checked with a local build, a
+        comparison of the elaborated Challenge and Solution statements and definitions (pp.all), and
+        #print axioms (Lean v4.35.0-rc3, Mathlib c55e6e786f49471c72fbddbec5415808896aec1e).
+      cost:
+        wall_time: "a few hours"
+        spend_usd: "subscription-based"
+        hardware: "local machine"
+      prompting_notes: "Natural-language instructions in Spanish, directed by the author."
+  spend_usd: "not tracked"
+  notes: >-
+    The Lean development is AI-written under the author's direction and mechanically verified: no
+    sorry, axioms limited to propext, Classical.choice and Quot.sound, identical elaborated
+    statements and definitions in the Challenge and the Solution. The article itself reports that
+    the proof of the ⌊n²/4⌋ bound was first found by an AI model and then simplified and extended by
+    its authors.
+
+fidelity:
+  divergences: >-
+    Graphs are Mathlib SimpleGraphs on a finite vertex type. Diameter-2-criticality uses Mathlib's
+    extended diameter (ediam): the diameter is 2 and deleting any edge makes it larger than 2
+    (possibly infinite, i.e. disconnected). A matching is a finite set of edges of G, no two of which
+    share a vertex; it is maximal if no further edge of G can be added. The non-edges of G are the
+    edges of the complement graph Gᶜ. The equality case is stated as an isomorphism with
+    completeBipartiteGraph (Fin ⌈n/2⌉) (Fin ⌊n/2⌋). In the proof, the auxiliary graph 𝓘' of the
+    article is built on the whole of Sym2 V (other pairs are isolated), and the bipartite multigraph
+    𝓙 is replaced by a weighting of the switch exits (weight 2 for a safe exit, 1 otherwise), which
+    gives the same double counting.
+
+review:
+  status: "agent-reviewed"
+  reviewers:
+    - "Claude Opus 5.5 (AI agent in Claude Code, acting for the author)"
+  notes: >-
+    Agent review by Claude Opus 5.5, distinct from the mechanical verification: the agent checked
+    the statements and the definitions against the article. No independent human review of the
+    formalization has been performed, and the article's authors have not reviewed it.
+
+alignment:
+  namespace: "MurtySimonConjecture"
+  statements:
+    - {source: "Theorem 1.1 (edge bound)", lean: "MurtySimonConjecture.murty_simon", module: "Challenge", status: "proved"}
+    - {source: "Theorem 1.1 (equality case)", lean: "MurtySimonConjecture.murty_simon_equality", module: "Challenge", status: "proved"}
+    - {source: "Theorem 1.1 (the bound is attained by K_{⌈n/2⌉,⌊n/2⌋})", lean: "MurtySimonConjecture.murty_simon_sharp", module: "Challenge", status: "proved"}
+    - {source: "Lemma 1.2", lean: "MurtySimonConjecture.lemma_1_2", module: "Challenge", status: "proved"}
+    - {source: "Lemma 1.3", lean: "MurtySimonConjecture.lemma_1_3", module: "Challenge", status: "proved"}
+
+acknowledgements: >-
+  Mathlib and the Lean community.
